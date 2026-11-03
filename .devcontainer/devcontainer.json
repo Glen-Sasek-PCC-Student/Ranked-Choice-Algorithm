@@ -1,0 +1,32 @@
+{
+  "postCreateCommand": "sudo apt-get update && sudo apt-get install -y astyle",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-vscode.cpptools",
+        "ms-vscode.cpptools-extension-pack",
+        "ms-vscode.cpptools-themes",
+        "ms-vscode.cmake-tools",
+        "GitHub.copilot",
+        "GitHub.copilot-chat",
+        "liximomo.remotefs",
+        "mathematic.vscode-pdf"
+      ],
+      "settings": {
+        "github.copilot.enable": {
+          "*": false,
+          "markdown": false,
+          "plaintext": false
+        },
+        "github.copilot.advanced": {
+          "authProvider": "github" 
+        }
+      }
+    },
+    "codespaces": {
+      "openFiles": [
+        "main.cpp"
+      ]
+    }
+  }
+}

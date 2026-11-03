@@ -1,0 +1,13 @@
+{
+  "editor.stickyScroll.enabled": false,
+  "git.postCommitCommand": "sync",
+  "git.autorefresh": true,
+  "git.autofetch": true,
+  "git.confirmSync": false,
+  "github.copilot.enable": {
+    "*": false,
+    "plaintext": false,
+    "markdown": false,
+    "scminput": false
+  }
+}
