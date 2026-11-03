@@ -63,6 +63,15 @@ class Ballot
 {
 public:
   vector<string> ranked_selections;
+  void print()
+  {
+    cout << endl
+         << "BALLOT" << endl;
+    for (const string s : ranked_selections)
+    {
+      cout << s << endl;
+    }
+  }
 };
 
 const int MAX_RANK = 6;
@@ -100,52 +109,74 @@ int main()
       }
       else
       {
-        cout << "BALLOT ERROR MAX RANK EXCEEDED" < endl;
+        cout << "BALLOT ERROR MAX RANK EXCEEDED" << endl;
       }
+      // ballot.print();
     }
   }
 
   int majority = ballots.size() / 2 + 1;
   bool next = true;
-  map<string, int> votes;
+
+  cout << "NEEDED TO WIN: " << majority << endl;
   do
   {
+    map<string, int> votes;
     for (const Ballot &ballot : ballots)
     {
-      const string &selection = ballot.ranked_selections[0];
-      if (votes.count(selection))
+      if (ballot.ranked_selections.size() > 0)
       {
-        votes[selection]++;
-      }
-      else
-      {
-        votes[selection] = 1;
-      }
-      if (votes[selection] >= majority)
-      {
-        cout << "WINNER: " << selection << "\tVOTES: " << votes[selection] << endl;
-        next = false;
+        const string &selection = ballot.ranked_selections[0];
+        if (votes.count(selection) > 0)
+        {
+          votes[selection]++;
+        }
+        else
+        {
+          votes[selection] = 1;
+        }
+        if (votes[selection] >= majority)
+        {
+          cout << "WINNER: " << selection << "\tVOTES: " << votes[selection] << endl;
+          next = false;
+        }
+        cout << selection << '\t' << votes[selection] << endl;
       }
     }
+    
     if (next)
     {
       int min = votes.begin()->second;
       string least_votes = votes.begin()->first;
+      cout << "INITIAL MIN: " << least_votes << '\t' << min << endl;
       for (const auto &[key, value] : votes)
       {
+        cout << key << ": " << value << endl;
         if (value < min)
         {
           min = value;
           least_votes = key;
+          cout << "UPDATE MIN: " << least_votes << '\t' << min << endl;
         }
       }
+      cout << "ELIMINATING: " << least_votes << '\t' << min << endl;
       for (Ballot &ballot : ballots)
       {
-        if(ballot.ranked_selections[0] == least_votes) {
-          ballot.ranked_selections.erase(ballot.ranked_selections.begin());
-        } 
+        vector<string> &v = ballot.ranked_selections;
+        if (v.size() > 0 && v[0] == least_votes)
+        {
+          cout << "BEFORE erase: " << v[0] << endl;
+          if(v.size()>1){
+            swap(v[0], v.back());
+          }
+          v.pop_back(); // Decrements size instantly without shifting
+          if(v.size() > 0) {
+            cout << "AFTER erase: " << v[0] << endl;
+          }
+        }
       }
     }
+    //next = false;
   } while (next);
 
   return 0;
