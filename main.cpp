@@ -1,8 +1,8 @@
 // ------------- FILE HEADER -------------
-// Author ✅: 
+// Author ✅:
 // Assignment ✅:
 // Date ✅:
-// Citations: 
+// Citations:
 
 // Single-Winner Ranked Choice Voting
 // This form of voting is also referred to as instant runoff voting (IRV). Single-winner RCV was
@@ -19,8 +19,6 @@
 // they are declared elected. If no candidate receives a majority, the process of
 // eliminating a candidate and transferring votes in rounds continues
 
-
-
 // Multi-Winner Ranked Choice Voting
 // This form of voting is also referred to as single transferable vote (STV) or proportional ranked
 // choice voting (PRCV). Multi-winner RCV was used for City of Portland City Council elections,
@@ -28,7 +26,7 @@
 // Code, multi-winner ranked choice voting operates as follows:
 //  ● Voters rank up to 6 candidates in order of preference.
 //  ● The City charter specifies the threshold for election as the percentage of votes a
-// 
+//
 // candidate must receive to be elected such that no more candidates could reach the
 // threshold than the number of offices to be elected. In a Portland City Council race with
 // three Council members being elected, the threshold is 25%+1 vote.
@@ -51,47 +49,132 @@
 //  ○ If a ballot does not have any remaining valid rankings when a vote is being
 //    transferred, the ballot is declared inactive and set aside.
 
-
 // ------------- CODE -------------
 #include <iostream>
+#include <vector>
+#include <map>
+#include <limits>
 
 using namespace std;
 
 // Function prototypes (if any)
 
+class Ballot
+{
+public:
+  vector<string> ranked_selections;
+};
+
+const int MAX_RANK = 6;
+
+enum
+{
+  START_COUNT,
+  END_COUNT,
+  START_BALLOT,
+  END_BALLOT
+};
+
+const string CONTROL_CONSTANTS[] = {"START_COUNT", "END_COUNT", "START_BALLOT", "END_BALLOT"};
 
 // Main function
 // https://en.cppreference.com/w/cpp/language/main_function.html
-int main() {
-  cout << "Hello, World!" << endl;
+int main()
+{
+  vector<Ballot> ballots;
+
+  string s = "";
+  while (cin >> s && s != CONTROL_CONSTANTS[END_COUNT])
+  {
+    if (s == CONTROL_CONSTANTS[START_BALLOT])
+    {
+      Ballot ballot;
+      int rank = 1;
+      while (cin >> s && s != CONTROL_CONSTANTS[END_BALLOT])
+      {
+        ballot.ranked_selections.push_back(s);
+      }
+      if (ballot.ranked_selections.size() <= MAX_RANK)
+      {
+        ballots.push_back(ballot);
+      }
+      else
+      {
+        cout << "BALLOT ERROR MAX RANK EXCEEDED" < endl;
+      }
+    }
+  }
+
+  int majority = ballots.size() / 2 + 1;
+  bool next = true;
+  map<string, int> votes;
+  do
+  {
+    for (const Ballot &ballot : ballots)
+    {
+      const string &selection = ballot.ranked_selections[0];
+      if (votes.count(selection))
+      {
+        votes[selection]++;
+      }
+      else
+      {
+        votes[selection] = 1;
+      }
+      if (votes[selection] >= majority)
+      {
+        cout << "WINNER: " << selection << "\tVOTES: " << votes[selection] << endl;
+        next = false;
+      }
+    }
+    if (next)
+    {
+      int min = votes.begin()->second;
+      string least_votes = votes.begin()->first;
+      for (const auto &[key, value] : votes)
+      {
+        if (value < min)
+        {
+          min = value;
+          least_votes = key;
+        }
+      }
+      for (Ballot &ballot : ballots)
+      {
+        if(ballot.ranked_selections[0] == least_votes) {
+          ballot.ranked_selections.erase(ballot.ranked_selections.begin());
+        } 
+      }
+    }
+  } while (next);
+
   return 0;
 }
 
 // Function implementations (if any)
 
-
 // ------------- DESIGN -------------
-/* 
+/*
 Program Name:
 
 Program Description:
 
 Design:
 A. INPUT
-Define the input variables including name data type. 
+Define the input variables including name data type.
 
 B. OUTPUT
-Define the output variables including data types. 
+Define the output variables including data types.
 
 C. CALCULATIONS
-Describe calculations used by algorithms in step D.  
-List all formulas. 
+Describe calculations used by algorithms in step D.
+List all formulas.
 If there are no calculations needed, state there are no calculations.
 
 D. LOGIC and ALGORITHMS
-Design the logic of your program using pseudocode or flowcharts. 
+Design the logic of your program using pseudocode or flowcharts.
 Use conditionals, loops, functions or array constructs.
-List the steps in transforming inputs into outputs. 
+List the steps in transforming inputs into outputs.
 https://github.com/Glen-Sasek-PCC-Instructor/2025-06-22/blob/main/Pseudocode-Reference.txt
 
 
