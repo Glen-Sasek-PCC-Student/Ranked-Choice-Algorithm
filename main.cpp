@@ -4,13 +4,52 @@
 // Date ✅:
 // Citations: 
 
-// https://ballotpedia.org/Ranked-choice_voting_(RCV)
-// Voters rank the candidates for a given office by preference on their ballots.
-// If a candidate wins an outright majority of first-preference votes (i.e., 50 percent plus one), he or she will be declared the winner.
-// If, on the other hand, no candidates win an outright majority of first-preference votes, the candidate with the fewest first-preference votes is eliminated.
-// All first-preference votes for the failed candidate are eliminated, and second-preference choices on these ballots are then counted as first-preference.
-// A new tally is conducted to determine whether any candidate has won an outright majority of the ballots.
-// The process is repeated until a candidate wins a majority of votes cast.
+// Single-Winner Ranked Choice Voting
+// This form of voting is also referred to as instant runoff voting (IRV). Single-winner RCV was
+// used to elect Portland Mayor and Portland Auditor. Per City of Portland Code, single-winner
+// ranked choice voting operates as following:
+//  ● Voters may rank up to 6 candidates in order of preference.
+//  ● If no candidate receives a majority of the vote (i.e. 50%+1) after counting Rank 1 votes
+// for each candidate in the first round, the candidate with the fewest number of votes is
+// eliminated and votes for that candidate are transferred to their voters’ next-highest
+// ranked active candidates.
+//  ○ If a ballot does not indicate any additional candidate rankings, the ballot is
+// declared inactive and set aside.
+//  ● If a candidate in the second round receives a majority of the votes tallied in that round,
+// they are declared elected. If no candidate receives a majority, the process of
+// eliminating a candidate and transferring votes in rounds continues
+
+
+
+// Multi-Winner Ranked Choice Voting
+// This form of voting is also referred to as single transferable vote (STV) or proportional ranked
+// choice voting (PRCV). Multi-winner RCV was used for City of Portland City Council elections,
+// which elect 3 candidates per district for four newly-created districts. Per City of Portland
+// Code, multi-winner ranked choice voting operates as follows:
+//  ● Voters rank up to 6 candidates in order of preference.
+//  ● The City charter specifies the threshold for election as the percentage of votes a
+// 
+// candidate must receive to be elected such that no more candidates could reach the
+// threshold than the number of offices to be elected. In a Portland City Council race with
+// three Council members being elected, the threshold is 25%+1 vote.
+//  ● After the initial round of counting the Rank 1 votes for each candidate, if one or more
+// candidates reach the threshold, they are declared elected. Tabulation continues in
+// rounds until all seats to be filled are elected.
+//  ○ If a candidate is elected in a round, any votes they received above the threshold
+//    (known as surplus votes) are transferred to their voters’ next-ranked remaining
+//    candidates. Surplus votes are transferred on a fractional basis to ensure all
+//    voters who voted for the elected candidate contribute to the identification of
+//    next-ranked candidates.
+//    For example, if the threshold were established at 9,000 votes and a
+//    candidate received 10,000 votes, their “surplus” is 1,000 votes. The
+//    1,000 votes are 10% (0.1) of the total votes for the elected candidate, so
+//    0.1 vote is transferred from each of the 10,000 ballots to the next-ranked
+//    candidate identified on each respective ballot.
+//  ○ In each subsequent round of tabulation, the candidate with the fewest number
+//    of votes is eliminated and votes for that candidate are transferred to their voters’
+//    next highest-ranked active candidates.
+//  ○ If a ballot does not have any remaining valid rankings when a vote is being
+//    transferred, the ballot is declared inactive and set aside.
 
 
 // ------------- CODE -------------
