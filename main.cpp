@@ -51,7 +51,7 @@
 
 // ------------- CODE -------------
 #include <iostream>
-#include <vector>
+#include <list>
 #include <map>
 #include <limits>
 
@@ -62,7 +62,7 @@ using namespace std;
 class Ballot
 {
 public:
-  vector<string> ranked_selections;
+  list<string> ranked_selections;
   void print()
   {
     cout << endl
@@ -90,7 +90,7 @@ const string CONTROL_CONSTANTS[] = {"START_COUNT", "END_COUNT", "START_BALLOT", 
 // https://en.cppreference.com/w/cpp/language/main_function.html
 int main()
 {
-  vector<Ballot> ballots;
+  list<Ballot> ballots;
 
   string s = "";
   while (cin >> s && s != CONTROL_CONSTANTS[END_COUNT])
@@ -126,7 +126,7 @@ int main()
     {
       if (ballot.ranked_selections.size() > 0)
       {
-        const string &selection = ballot.ranked_selections[0];
+        string selection = ballot.ranked_selections.front();
         if (votes.count(selection) > 0)
         {
           votes[selection]++;
@@ -140,7 +140,7 @@ int main()
           cout << "WINNER: " << selection << "\tVOTES: " << votes[selection] << endl;
           next = false;
         }
-        cout << selection << '\t' << votes[selection] << endl;
+        // cout << selection << '\t' << votes[selection] << endl;
       }
     }
     
@@ -149,8 +149,10 @@ int main()
       int min = votes.begin()->second;
       string least_votes = votes.begin()->first;
       cout << "INITIAL MIN: " << least_votes << '\t' << min << endl;
-      for (const auto &[key, value] : votes)
+      for (const pair<const string, int> &entry : votes)
       {
+        const string &key = entry.first;
+        const int &value = entry.second;
         cout << key << ": " << value << endl;
         if (value < min)
         {
@@ -162,16 +164,13 @@ int main()
       cout << "ELIMINATING: " << least_votes << '\t' << min << endl;
       for (Ballot &ballot : ballots)
       {
-        vector<string> &v = ballot.ranked_selections;
-        if (v.size() > 0 && v[0] == least_votes)
+        list<string> &v = ballot.ranked_selections;
+        if (v.size() > 0 && v.front() == least_votes)
         {
-          cout << "BEFORE erase: " << v[0] << endl;
-          if(v.size()>1){
-            swap(v[0], v.back());
-          }
-          v.pop_back(); // Decrements size instantly without shifting
+          cout << "BEFORE erase: " << v.front() << endl;
+          v.erase(v.begin());
           if(v.size() > 0) {
-            cout << "AFTER erase: " << v[0] << endl;
+            cout << "AFTER erase: " << v.front() << endl;
           }
         }
       }
@@ -211,5 +210,42 @@ https://github.com/Glen-Sasek-PCC-Instructor/2025-06-22/blob/main/Pseudocode-Ref
 
 SAMPLE RUNS
 Copy from assignment document.
+
+Charlie
+END_BALLOT
+START_BALLOT
+Dylan
+Isla
+Hannah
+Yara
+Fiona
+Jack
+END_BALLOT
+START_BALLOT
+Olivia
+Noah
+Xavier
+END_BALLOT
+START_BALLOT
+Michael
+Theo
+Ethan
+Charlie
+Quincy
+END_BALLOT
+START_BALLOT
+Zoe
+Sam
+END_BALLOT
+START_BALLOT
+Oliver
+END_BALLOT
+START_BALLOT
+Yara
+END_BALLOT
+START_BALLOT
+Dylan
+Olivia
+Xavier
 
 */
